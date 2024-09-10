@@ -239,3 +239,14 @@ To use the modules, do not forget to export the current environment:
 ```sh
 source devel/setup.<shell>
 ```
+
+
+Credits
+--------------
+- Rodrigo Pérez Dattari
+- Leandro de Souza Rosa
+- Micah Prendergast
+- Nicky Mol
+- Zhaoting Li
+- Saray Bakker
+- LASA @ https://github.com/epfl-lasa/iiwa_ros
