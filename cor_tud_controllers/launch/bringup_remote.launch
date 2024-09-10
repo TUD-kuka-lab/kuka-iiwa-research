@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!--|
+Authors:  Rodrigo Perez-Dattari <r.j.perezdattari@tudelft.nl>
+          Leandro de Souza Rosa <l.desouzarosa@tudelft.nl>
+|-->
+
+<launch>
+    <!-- Select the robot -->
+    <arg name="model" />
+    <arg name="robot_name" default="iiwa"/>
+    <arg name="interface" default="EffortJointInterface"/>
+    <arg name="simulation" default="false"/>
+    <arg name="x" default="0"/>
+    
+    <!-- Arguments gazebo -->
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="world_name" default="$(find iiwa_gazebo)/world/iiwa.world"/>
+        
+    <!-- Set up varibales related to the namespaces -->
+    <include file="$(find cor_tud_controllers)/launch/namespace.launch">
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="model" value="$(arg model)"/>
+    </include>
+    
+    <!-- load URDF models -->
+    <param
+        name="/$(arg robot_name)$(arg model)_description"
+        command="$(find xacro)/xacro --inorder 
+        '$(find cor_tud_controllers)/urdf/$(arg robot_name)$(arg model).urdf.xacro'
+        hardware_interface:=$(arg interface)
+        robot_name:=$(arg robot_name)
+        model:=$(arg model)"
+    />
+
+    <!-- Launch FRI drivers -->
+    <include
+        unless="$(arg simulation)"
+        file="$(find cor_tud_controllers)/launch/drivers.launch">
+        <arg name="model" value="$(arg model)"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+    </include>
+    
+    <!-- Spawn ROS controller -->
+    <include file="$(find cor_tud_controllers)/launch/control.launch">
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="model" value="$(eval model)"/>
+        <arg if="$(eval interface == 'EffortJointInterface')" name="controller" value="TorqueController"/>
+        <arg if="$(eval interface == 'PositionJointInterface')" name="controller" value="PositionController"/>
+    </include>
+    
+    <!-- Instantiate robot request server -->  
+     <node 
+        pkg="cor_tud_controllers" 
+        name="$(arg robot_name)$(arg model)_robot_request_server" 
+        type="robot_request_server.py" 
+        output="screen"
+        args="--robot_name $(arg robot_name)$(arg model)">   
+     </node>
+    
+    <!-- If sim, launch Gazebo drivers and friends -->
+    <include
+        if="$(arg simulation)"
+        file="$(find cor_tud_controllers)/launch/gazebo_drivers.launch">
+        <arg name="model" value="$(arg model)"/>
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="x" value="$(arg x)"/>
+    </include>
+    
+    <!-- If sim, loads the Gazebo world -->
+    <include 
+        if="$(arg simulation)"
+        file="$(find gazebo_ros)/launch/empty_world.launch"
+    >
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="world_name" value="$(arg world_name)"/> 
+    </include>
+</launch>

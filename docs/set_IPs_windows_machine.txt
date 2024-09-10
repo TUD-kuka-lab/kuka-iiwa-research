@@ -1,0 +1,12 @@
+OptiTrack: 
+	connect the cable to the lower eth socket
+	On windows, network connections, properties, IP4 properties, set the connection to:
+	IP: 192.180.1.6
+	subnet mask: 255.255.255.0
+
+SunriseWorkbench:
+	This serves to update the sunrise application (smartPad)
+	Connect the ETH USB adapter socket to the robot right ETH socket (label x66)
+	On windows, network connections, properties, IP4 properties, set the connection to:
+	IP: 172.31.1.146
+	subnet mask: 255.255.0.0

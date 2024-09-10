@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--|
+    Copyright (C) 2019 Learning Algorithms and Systems Laboratory, EPFL, Switzerland
+    Authors:  Konstantinos Chatzilygeroudis (maintainer)
+              Bernardo Fichera
+              Walid Amanhoud
+    email:    costashatz@gmail.com
+              bernardo.fichera@epfl.ch
+              walid.amanhoud@epfl.ch
+    Other contributors:
+              Yoan Mollard (yoan@aubrune.eu)
+    website:  lasa.epfl.ch
+
+    This file is part of iiwa_ros.
+
+    iiwa_ros is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    iiwa_ros is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+|-->
+<launch>
+  <!-- Select the robot -->
+  <arg name="robot_name" default="iiwa"/>
+  <arg name="model" default="14" />
+
+  <!-- Select the controller -->
+  <arg name="controller" default="TorqueController"/>
+
+  <!-- Setup iiwa -->
+  <include file="$(find iiwa_driver)/launch/iiwa_setup.launch">
+      <arg name="robot_name" value="$(arg robot_name)"/>
+      <arg name="model" value="$(arg model)"/>
+      <arg name="controller" value="$(arg controller)"/>
+  </include>
+
+  <!-- Spawn iiwa FRI driver -->
+  <node pkg="iiwa_driver" type="iiwa_driver" name="iiwa_driver" respawn="false" output="screen">
+    <remap from="/joint_states" to="/iiwa/joint_states"/>
+    <remap from="/controller_manager" to="/iiwa/controller_manager"/>
+    <remap from="/commanding_status" to="/iiwa/commanding_status"/>
+    <!-- Load configurations from YAML file to parameter server -->
+    <rosparam file="$(find iiwa_driver)/config/iiwa.yaml" command="load"/>
+  </node>
+
+  <!-- Spawn controller -->
+  <include file="$(find iiwa_control)/launch/iiwa_control.launch">
+    <arg name="controller" value="$(arg controller)"/>
+  </include>
+  
+  <!-- Instantiate control server -->
+  <!--we should not edit these LASA files, if we need, we should have a corrspounding edited one in the cor_tud_* folders-->
+  <!--include
+        file="$(find cor_tud_controllers)/launch/control_server.launch"
+  >
+        <arg name="robot_name" value="$(arg robot_name)"/>
+        <arg name="model" value="$(arg model)"/>
+  </include-->
+
+</launch>

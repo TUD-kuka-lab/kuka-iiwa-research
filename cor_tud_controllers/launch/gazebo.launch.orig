@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--|
+Authors:  Leandro de Souza Rosa <l.desouzarosa@tudelft.nl>
+    Free for all, no warranties whatsoever.
+|-->
+
+<launch>
+    <!-- These are the arguments you can pass this launch file, for example paused:=true -->
+<<<<<<< HEAD
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+    <arg name="world_name" default="$(find iiwa_gazebo)/world/iiwa.world"/> 
+    <arg name="gzclient" default="false"/>
+
+    <!-- Select the robot -->
+    <arg name="robot_name" default="iiwa"/>
+    <arg name="model" default="14" />
+
+    <!-- Select the controller -->
+   <arg name="controller" default="TorqueController"/>
+=======
+    <arg name="paused"/>
+    <arg name="use_sim_time"/>
+    <arg name="gui"/>
+    <arg name="headless"/>
+    <arg name="debug"/>
+    <arg name="world_name"/> 
+    <arg name="gzclient" default="false"/>
+
+    <!-- Select the robot -->
+    <arg name="robot_name"/>
+    <arg name="model"/>
+
+    <!-- Select the controller -->
+    <arg name="controller"/>
+>>>>>>> bfd0fa48c4693667f1ab380adcf94001d3040c4d
+
+    <!-- Loads the Gazebo world -->
+    <include unless="$(arg gzclient)"
+        file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)" />
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="debug" value="$(arg debug)" />
+        <arg name="world_name" value="$(arg world_name)"/> 
+    </include>
+
+    <!-- Run a python script to send a service call to gazebo_ros to spawn a URDF robot -->
+   
+    <!-- Spawn controller -->
+    <rosparam
+        if="$(eval (model == 7) or (model == '7-14'))"
+        file="$(find iiwa_gazebo)/config/iiwa_control.yaml" 
+        command="load" 
+        ns="iiwa7"
+    />
+    <!-- Spawn robot in simulation world -->
+    <node 
+        if="$(eval (model == 7) or (model == '7-14'))"
+        name="urdf_spawner7" 
+        pkg="gazebo_ros" 
+        type="spawn_model" 
+        respawn="false" 
+        output="screen" 
+        args="-urdf -model iiwa7 -param /iiwa7_description -x=1"
+        >
+    </node>
+    
+    <!-- Spawn controller -->
+    <rosparam
+        if="$(eval (model == 14) or (model == '7-14'))"
+        file="$(find iiwa_gazebo)/config/iiwa_control.yaml" 
+        command="load" 
+        ns="iiwa14"
+    /> 
+    <!-- Spawn robot in simulation world -->
+    <node 
+        if="$(eval (model == 14) or (model == '7-14'))"
+        name="urdf_spawner14" 
+        pkg="gazebo_ros" 
+        type="spawn_model" 
+        respawn="false" 
+        output="screen" 
+<<<<<<< HEAD
+        args="-urdf -model iiwa14 -param /iiwa14_description -x=0"
+=======
+        args="-urdf -model iiwa14 -param /iiwa14_description -x=-1"
+>>>>>>> bfd0fa48c4693667f1ab380adcf94001d3040c4d
+    />                                                                                        
+        
+
+</launch>
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> bfd0fa48c4693667f1ab380adcf94001d3040c4d

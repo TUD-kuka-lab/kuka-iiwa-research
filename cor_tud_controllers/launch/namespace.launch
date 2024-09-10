@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--|
+    Leandro de Souza Rosa   <l.desouzarosa@tudelft.nl>
+    Free for all, no warranties whatsoever.
+|-->
+        
+<launch>
+    <arg name="model"/>
+    <arg name="robot_name"/>
+
+    <node 
+        pkg="cor_tud_controllers" 
+        name="add_namespace_$(arg robot_name)$(arg model)" 
+        type="add_namespace.py"
+        args="$(arg robot_name)$(arg model)"
+        output="screen"
+    />
+</launch>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--|
+    Leandro de Souza Rosa   <l.desouzarosa@tudelft.nl>
+    Free for all, no warranties whatsoever.
+|-->
+
+<launch>
+    <arg name="model"/>
+    <arg name="robot_name"/>
+    
+    <group
+        ns="/$(arg robot_name)$(arg model)"
+    >
+        <!-- Load configs from YAML file to parameter server -->
+        <rosparam
+            file="$(find cor_tud_controllers)/config/$(arg robot_name)$(arg model).yaml"
+            command="load"
+        />
+        
+        <!-- Spawn iiwa FRI driver for KUKA -->
+        <node 
+            pkg="iiwa_driver" 
+            type="iiwa_driver" 
+            name="iiwa_driver" 
+            respawn="false" 
+            output="screen"
+        />
+    </group>
+</launch>

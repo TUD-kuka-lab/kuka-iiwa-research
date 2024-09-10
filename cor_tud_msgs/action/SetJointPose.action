@@ -1,0 +1,10 @@
+#goal
+float64[] pose
+float64 precision
+float64 rate
+---
+#result
+bool success
+---
+#feedback
+bool finished

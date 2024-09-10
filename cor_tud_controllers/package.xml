@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>cor_tud_controllers</name>
+  <version>0.0.1</version>
+  <description>Multi modal controllers developed in TUD's CoR for the KUKA robots</description>
+
+  <maintainer email="leandro@todo.todo">leandro</maintainer>
+  <maintainer email="j.m.prendergast@tudelft.nl">micah</maintainer>
+
+  <license>Apach 2.0 - Free for all, no warranties whatsoever</license>
+
+  <author email="leandro@todo.todo">leandro</author>
+  <author email="j.m.prendergast@tudelft.nl">micah</author>
+
+  <!-- TODO: should we set this? -->
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>cor_tud_msgs</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  
+  <build_export_depend>cor_tud_msgs</build_export_depend>
+  <build_export_depend>actionlib_msgs</build_export_depend>
+      
+  <!-- build_depend>std_msgs</build_depend -->
+  <!-- build_export_depend>std_msgs</build_export_depend -->
+      
+  <!-- exec_depend>actionlib_msgs</exec_depend -->
+  <!-- exec_depend>std_msgs</exec_depend -->
+
+</package>

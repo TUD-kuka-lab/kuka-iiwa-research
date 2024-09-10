@@ -1,0 +1,46 @@
+<?xml version="1.0"?> <!--| Authors:  Leandro de Souza Rosa <l.desouzarosa@tudelft.nl>
+    Free for all, no warranties whatsoever.
+|-->
+    
+<launch>
+    <arg name="model"/>
+    <arg name="robot_name"/>
+    <arg name="x" default="0"/>
+
+    <group 
+        ns="/$(arg robot_name)$(arg model)"
+    >
+        <!-- Load controller parameters to ros param server -->
+        <rosparam
+            file="$(find iiwa_gazebo)/config/iiwa_control.yaml" 
+            command="load" 
+        />
+
+        <!-- Spawn robot in simulation world -->
+        <node 
+            name="urdf_spawner_$(arg robot_name)$(arg model)" 
+            pkg="gazebo_ros" 
+            type="spawn_model" 
+            respawn="false" 
+            output="screen"
+            args="-urdf -model $(arg robot_name)$(arg model) -param /$(arg robot_name)$(arg model)_description -x=$(arg x)"
+            >
+        </node>
+
+        <!-- Load IK params from YAML file to parameter server -->
+        <rosparam 
+            file="$(find cor_tud_controllers)/config/iiwa$(arg model)_service.yaml" 
+            command="load"
+        />
+
+        <!-- launch the IK server -->
+        <node 
+            name="iiwa_service" 
+            pkg="iiwa_tools" 
+            type="iiwa_service" 
+            respawn="false"
+            output="screen"
+        />
+    </group>
+
+</launch>

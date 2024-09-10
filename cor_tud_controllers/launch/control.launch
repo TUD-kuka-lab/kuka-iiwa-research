@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--|
+Authors:  Leandro de Souza Rosa <l.desouzarosa@tudelft.nl>
+    Free for all, no warranties whatsoever.
+|-->
+
+<launch>
+    <!-- Select the controller -->
+    <arg name="controller"/>
+    <arg name="model"/>
+    <arg name="robot_name"/>
+
+    <group 
+        ns="$(arg robot_name)$(arg model)"
+    >
+        <!-- Load joint controller config from YAML to param server -->
+        <rosparam 
+            file="$(find cor_tud_controllers)/config/controller.yaml" 
+            command="load"
+         />
+
+        <!-- load the controllers -->
+        <node 
+            name="iiwa_controller" 
+            pkg="controller_manager" 
+            type="spawner" 
+            respawn="false"
+            output="screen" 
+            args="/$(arg robot_name)$(arg model)/$(arg controller) /$(arg robot_name)$(arg model)/joint_state_controller"
+        /> 
+            
+        <!-- state publisher --> 
+        <node 
+            name="robot_state_publisher" 
+            pkg="robot_state_publisher" 
+            type="robot_state_publisher"
+            respawn="false" output="screen"
+        >
+            <remap 
+                from='robot_description'
+                to="/$(arg robot_name)$(arg model)_description"
+            />
+        </node>
+    </group>
+</launch>

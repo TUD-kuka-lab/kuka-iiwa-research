@@ -1,0 +1,15 @@
+#goal
+float64[] reference
+float64[] stiffness
+string mode
+string file
+float64 time
+float64 precision
+float64 rate
+---
+#result
+bool success
+---
+#feedback
+bool finished
+string mode

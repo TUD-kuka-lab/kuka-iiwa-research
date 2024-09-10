@@ -1,0 +1,10 @@
+#goal
+bool start 
+string topic
+string file
+---
+#result
+bool success
+---
+#feedback
+bool finished

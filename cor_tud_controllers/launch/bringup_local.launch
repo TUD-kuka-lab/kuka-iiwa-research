@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--|
+Authors:  Rodrigo Perez-Dattari <r.j.perezdattari@tudelft.nl>
+|-->
+
+<launch>
+    <!-- Select the robot -->
+    <arg name="model" />
+    <arg name="robot_name" default="iiwa"/>
+    
+    <!-- Instantiate cartesian state publisher -->
+    <node 
+        pkg="cor_tud_controllers" 
+        name="$(arg robot_name)$(arg model)_cartesian_state_publisher" 
+        type="cartesian_state_publisher.py" 
+        output="screen"
+        args="--robot_name $(arg robot_name)$(arg model)">   
+    </node>
+    
+    <!-- Instantiate cartesian state publisher -->
+    <node 
+        pkg="cor_tud_controllers" 
+        name="$(arg robot_name)$(arg model)_control_server" 
+        type="control_server.py" 
+        output="screen"
+        args="--robot_name $(arg robot_name)$(arg model)">   
+    </node>
+    
+</launch>

@@ -1,0 +1,19 @@
+###
+# Authors: Leandro de Souza Rosa    <l.desouzarosa@tudelft.nl>
+# NO warranties whatsoever.
+
+fri:
+  port: 30214
+  robot_ip: 192.180.1.14
+  robot_description: /iiwa14_description
+
+hardware_interface:
+  control_freq: 1000 # in Hz
+  joints:
+    - iiwa_joint_1
+    - iiwa_joint_2
+    - iiwa_joint_3
+    - iiwa_joint_4
+    - iiwa_joint_5
+    - iiwa_joint_6
+    - iiwa_joint_7
