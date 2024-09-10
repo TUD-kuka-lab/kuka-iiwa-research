@@ -2,7 +2,7 @@ TUD CoR fork from https://github.com/epfl-lasa/iiwa_ros
 
 Controllers, codes and examples to work with the KUKAs
 
-Installation Instructions - edit from LASA
+Installation Instructions
  
 ROS Stack for KUKA's IIWA robots
 ---------------------------------------
