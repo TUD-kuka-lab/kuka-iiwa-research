@@ -127,7 +127,7 @@ class CartesianImpedanceController:
         tau_nullspace = self._nullspace_control(J, elbow_pose, elbow_velocity, q)
 
         # Add ee's tau with nullspace tau
-        tau = tau_ee #+ tau_nullspace
+        tau = tau_ee + tau_nullspace
 
         return tau
 
